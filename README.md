@@ -322,14 +322,6 @@ This plugin is provided as-is for personal and commercial use on Minecraft serve
 
 ---
 
-## 🤝 Support
-
-For issues, suggestions, or questions:
-- Open an issue on GitHub
-- Contact: [Your contact information]
-
----
-
 ## 📋 Changelog
 
 ### v1.0.0 (Initial Release)
