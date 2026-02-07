@@ -1,0 +1,30 @@
+name: ChatManagement2
+version: 1.0.0
+main: com.chatmanagement.ChatManagement2
+api-version: '1.21'
+folia-supported: true
+author: MistaSoup
+description: Advanced anti-spam and chat management plugin with smart detection
+
+commands:
+  chatmanagement:
+    description: Main plugin command
+    aliases: [cm]
+    permission: chatmanagement.reload
+    usage: /<command> [reload|help|version]
+  msg:
+    description: Send a private message
+    aliases: [message, w, whisper, tell, pm, dm]
+    usage: /<command> <player> <message>
+  r:
+    description: Reply to the last private message
+    aliases: [reply]
+    usage: /<command> <message>
+
+permissions:
+  chatmanagement.reload:
+    description: Allows reloading the plugin configuration
+    default: op
+  chatmanagement.bypass:
+    description: Bypass all chat restrictions
+    default: op

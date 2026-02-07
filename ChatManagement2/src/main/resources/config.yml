@@ -1,0 +1,224 @@
+# ╔══════════════════════════════════════════════════════════════════════╗
+# ║                     ChatManagement 2 Configuration                   ║
+# ║              Advanced Anti-Spam & Chat Protection Plugin             ║
+# ║                        Author: MistaSoup | v1.0.0                    ║
+# ╚══════════════════════════════════════════════════════════════════════╝
+
+# ═══════════════════════════════════════════════════════════════════════
+#                            GENERAL SETTINGS
+# ═══════════════════════════════════════════════════════════════════════
+settings:
+  # Number of messages to track per player for duplicate detection
+  # Higher = more memory usage, but better spam detection
+  message-history-size: 10
+  
+  # Similarity threshold for duplicate detection (0-100%)
+  # Higher = more strict (fewer false positives, might miss some spam)
+  # Lower = more lenient (catches more spam, might have false positives)
+  # Recommended: 80-85 for balanced detection
+  similarity-threshold: 80
+  
+  # Enable debug logging (logs blocked messages and detection info)
+  debug: false
+  
+  # Enable verbose logging (logs every processing step - very detailed)
+  # Only enable this for troubleshooting!
+  verbose: false
+
+# ═══════════════════════════════════════════════════════════════════════
+#                          DATABASE SETTINGS
+# ═══════════════════════════════════════════════════════════════════════
+database:
+  # Enable database storage for persistent mutes
+  # If disabled, will use YAML file storage
+  # Database is recommended for better performance with many mutes
+  enabled: true
+  
+  # Database type: 'sqlite' or 'mysql'
+  # SQLite: Simple, no setup required, stores in plugin folder
+  # MySQL: Better for large servers, requires MySQL server
+  type: sqlite
+  
+  # MySQL settings (only used if type is 'mysql')
+  mysql:
+    host: localhost
+    port: 3306
+    database: chatmanagement
+    username: root
+    password: ''
+
+# ═══════════════════════════════════════════════════════════════════════
+#                      DUPLICATE MESSAGE DETECTION
+# ═══════════════════════════════════════════════════════════════════════
+duplicate-messages:
+  # Number of times a player can repeat a similar message before being blocked
+  # Example: If set to 2, they can send the same message 2 times, the 3rd will be blocked
+  max-repeats: 2
+  
+  # Cooldown in seconds before they can send a similar message again
+  # After this time, their message history is cleared
+  cooldown-seconds: 30
+  
+  # Minimum message length to check for duplicates
+  # Messages shorter than this are not checked (prevents false positives on short phrases)
+  # Recommended: 3-5
+  min-message-length: 3
+
+# ═══════════════════════════════════════════════════════════════════════
+#                         BLOCKED WORDS FILTER
+# ═══════════════════════════════════════════════════════════════════════
+blocked-words:
+  # Enable blocked word filtering
+  enabled: true
+  
+  # Block partial matches
+  # If true: "class" would be blocked if "ass" is in the word list
+  # If false: only exact words or clear obfuscations are blocked
+  # Recommended: false to prevent false positives
+  block-partial-matches: false
+  
+  # Minimum word length for partial matching (only used if block-partial-matches is true)
+  # Shorter words won't be checked for partial matches to prevent false positives
+  min-word-length: 4
+  
+  # List of blocked words
+  # The plugin automatically detects:
+  # - Leetspeak (f*ck, fvck, fu<k)
+  # - Character substitutions (@→a, $→s, 0→o, 3→e, etc.)
+  # - Spacing tricks (f u c k)
+  # - Special characters (f.u.c.k, f-u-c-k)
+  word-list:
+    - nigger
+    - nigga
+
+# ═══════════════════════════════════════════════════════════════════════
+#                       ANTI-SPAM KICK SETTINGS
+# ═══════════════════════════════════════════════════════════════════════
+anti-spam-kick:
+  # Enable automatic kicking for rapid spam
+  enabled: true
+  
+  # Number of messages sent within the time window to trigger a kick
+  # Example: 7 messages in 5 seconds = kicked
+  message-threshold: 6
+  
+  # Time window in seconds to count messages
+  time-window-seconds: 5
+  
+  # Notify player when they are kicked (set to false for silent kicks)
+  notify-player: true
+  
+  # Message shown when player is kicked for spamming
+  kick-message: "&cYou have been kicked for spamming!"
+
+# ═══════════════════════════════════════════════════════════════════════
+#                         AUTO-MUTE SYSTEM
+# ═══════════════════════════════════════════════════════════════════════
+auto-mute:
+  # Enable auto-mute for players who get spam-kicked repeatedly
+  enabled: true
+  
+  # Number of spam kicks within the time window to trigger a mute
+  # Example: 3 kicks in 10 minutes = muted
+  kick-threshold: 3
+  
+  # Time window in minutes to count spam kicks
+  kick-window-minutes: 10
+  
+  # Duration of mute in seconds
+  # 300 seconds = 5 minutes
+  mute-duration-seconds: 600
+  
+  # Notify player when they are muted
+  notify-player: true
+  
+  # Message shown when player is muted (supports {duration} placeholder)
+  mute-notification: "&cYou have been muted for &e{duration} &cseconds for repeated spamming."
+  
+  # Message shown when muted player tries to chat
+  # {time} = seconds remaining
+  mute-message: "&cYou are muted for spamming. Time remaining: &e{time} &cseconds."
+  
+  # Allow muted players to receive private messages (they still can't send)
+  allow-receive-pm: true
+
+# ═══════════════════════════════════════════════════════════════════════
+#                            CUSTOM MESSAGES
+# ═══════════════════════════════════════════════════════════════════════
+messages:
+  # Message shown when config is reloaded successfully
+  reload-success: "&aChatManagement 2 configuration reloaded successfully!"
+  
+  # Message shown when player doesn't have permission
+  no-permission: "&cYou don't have permission to use this command!"
+  
+  # Notify player when their message is blocked (set to false for silent blocking)
+  notify-blocked-message: false
+  
+  # Message shown when a message is blocked (only if notify-blocked-message is true)
+  blocked-message-notification: "&cYour message was blocked."
+
+# ═══════════════════════════════════════════════════════════════════════
+#                       PRIVATE MESSAGING SYSTEM
+# ═══════════════════════════════════════════════════════════════════════
+private-messaging:
+  # Enable private messaging system
+  enabled: true
+  
+  # Base color for private messages (use & color codes)
+  message-color: "&d"
+  
+  # Commands that trigger private messaging
+  # These will be intercepted and handled by the plugin
+  commands:
+    - msg
+    - message
+    - w
+    - whisper
+    - tell
+    - pm
+    - dm
+  
+  # Format for messages you send
+  # {sender} = your name, {receiver} = recipient name, {message} = the message
+  # Color codes: &0-9, &a-f for colors, &l bold, &n underline, &o italic, &r reset
+  sent-format: "&7[&dYou &7-> &d{receiver}&7] &d{message}"
+  
+  # Format for messages you receive
+  received-format: "&7[&d{sender} &7-> &dYou&7] &d{message}"
+
+# ═══════════════════════════════════════════════════════════════════════
+#                          PUBLIC CHAT COLORS
+# ═══════════════════════════════════════════════════════════════════════
+chat-colors:
+  # Enable colored chat prefix feature
+  # Players can start their message with the prefix to make it colored
+  enabled: true
+  
+  # Symbol that triggers colored chat
+  # Example: ">hello" becomes green "hello"
+  color-prefix: ">"
+  
+  # Color applied to messages starting with the prefix
+  # Color codes: &0-9, &a-f
+  # &a = light green (default)
+  prefix-color: "&a"
+
+# ═══════════════════════════════════════════════════════════════════════
+#                             COLOR CODES
+# ═══════════════════════════════════════════════════════════════════════
+# Use these in any message configuration:
+# &0 = Black        &8 = Dark Gray
+# &1 = Dark Blue    &9 = Blue
+# &2 = Dark Green   &a = Green
+# &3 = Dark Aqua    &b = Aqua
+# &4 = Dark Red     &c = Red
+# &5 = Dark Purple  &d = Light Purple
+# &6 = Gold         &e = Yellow
+# &7 = Gray         &f = White
+#
+# Formatting:
+# &l = Bold         &o = Italic
+# &n = Underline    &m = Strikethrough
+# &k = Obfuscated   &r = Reset
+# ═══════════════════════════════════════════════════════════════════════
